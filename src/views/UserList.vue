@@ -24,13 +24,21 @@
                 </a-descriptions-item>
             </a-descriptions>
         </a-page-header>
+        
         <a-table :row-key="record => record.id" :columns="columns" :data-source='data' :pagination="pagination" :loading="loading" @change="handleTableChange">
-            
+            <template slot="action" slot-scope="text, record">
+                <a href="javascript:;">详情</a>
+                <a-divider type="vertical" />
+                <a-propconfirm v-if="datasource.length" title="请点击确定删除" @confirm="() => handleDelete(record.id)"><a href="javascript:;">删除</a></a-propconfirm>
+            </template>
         </a-table>
+        
+        <user-detail ref="userDetail"></user-detail>
     </div>
 </template>
 <script>
-    import reqwest from 'reqwest'
+    import reqwest from 'reqwest';
+    import UserDetail from './UserDetail.vue';
     const columns = [{
        title:'用户名',
         dataIndex: 'loginName',
@@ -55,9 +63,13 @@
         title: '状态',
         dataIndex: 'status',
         key: 'status'
+    },{
+        title: '操作',
+        scopedSlots: { customRender: 'action' },
     }];
     
     export default{
+        components: { UserDetail },
         data(){
             return {
                 columns,
@@ -77,7 +89,6 @@
                     data: params,
                     type: 'json'
                 }).then(data => {
-                    console.log(data);
                     this.loading = false;
                     this.data=data.content;
                     this.pagination.pageSize= data.pageable.pageSize;
@@ -94,7 +105,7 @@
                 this.fetch(params);
             },
             handleCreate(){
-                console.log('create');
+                this.$refs.userDetail.parentHandleShow();
             },
         },
         mounted(){
