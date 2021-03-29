@@ -1,5 +1,5 @@
 <template>
-        <a-modal title="用户详情" :visible="visible" :confirm-loading="confirmLoading" @ok="handleOk" @cancel="handleCancel" >
+        <a-modal title="用户详情" :visible="visible" :confirm-loading="confirmLoading" ok-text="保存" cancel-text="取消" :destroy-on-close="true" @ok="handleOk" @cancel="handleCancel" >
             <a-form-model :model="form" :label-col="labelCol" :wrapper-col="wrapperCol">
                 <a-form-model-item label="用户名">
                     <a-input v-model="form.loginName" />
@@ -35,10 +35,11 @@
                 labelCol:{span:8},
                 wrapperCol:{span:10},
                 form:{
+                    id:'',
                     loginName:'',
                     nickName:'',
                     realName:'',
-                    gender:undefined,
+                    gender:'',
                     phone:'',
                     email:'',
                 },
@@ -59,7 +60,25 @@
             handleCancel(){
                 this.visible = false;
             },
-            parentHandleShow(){
+            parentHandleShow(record){
+                console.log(record);
+                if(record === undefined){
+                    this.form.id = '';
+                    this.form.loginName = '';
+                    this.form.nickName = '';
+                    this.form.realName = '';
+                    this.form.gender = '';
+                    this.form.phone = '';
+                    this.form.email = '';
+                }else{
+                    this.form.id = record.id;
+                    this.form.loginName = record.loginName;
+                    this.form.nickName = record.nickName;
+                    this.form.realName = record.realName;
+                    this.form.gender = record.gender;
+                    this.form.phone = record.phone;
+                    this.form.email = record.email;
+                }
                 this.visible = true;
             }
         },
