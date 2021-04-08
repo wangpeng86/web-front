@@ -7,18 +7,21 @@
             </template>
             <a-descriptions size="small" :column="3">
                 <a-descriptions-item label="用户名">
-                    <a-input placeholder="请输入用户名"></a-input>
+                    <a-input v-model="schForm.loginName" placeholder="请输入用户名"></a-input>
                 </a-descriptions-item>
                 <a-descriptions-item label="手机号">
-                    <a-input placeholder="请输入手机号"></a-input>
+                    <a-input v-model="schForm.phone" placeholder="请输入手机号"></a-input>
                 </a-descriptions-item>
                 <a-descriptions-item label="状态">
-                    <a-select :allowClear="true" style="width: 60px;">
-                        <a-select-option value = "1">
-                            男
+                    <a-select v-model="schForm.status" :allowClear="true" style="width: 60px;">
+                        <a-select-option value="1">
+                            新建
                         </a-select-option>
                         <a-select-option value="2">
-                            女
+                            正常
+                        </a-select-option>
+                        <a-select-option value="9">
+                            禁用
                         </a-select-option>
                     </a-select>
                 </a-descriptions-item>
@@ -97,14 +100,20 @@
         components: { UserDetail },
         data(){
             return {
+                schForm:{
+                    loginName:null,
+                    phone:null,
+                    status:null,
+                },
                 columns,
                 data: [],
                 loading:false,
-                pagination: {current:0, pageSize: 10},
+                pagination: {pageSize: 5},
             };
         },
         methods:{
             fetch(params = {}){
+                params = this.schForm;
                 params.pageNumber = this.pagination.current;
                 params.pageSize = this.pagination.pageSize;
                 this.loading = true;
@@ -114,20 +123,17 @@
                     data: params,
                     type: 'json'
                 }).then(data => {
+                    console.log(data);
                     this.loading = false;
                     this.data=data.content;
-                    this.pagination.pageSize= data.pageable.pageSize;
-                    this.pagination.current= data.pageable.pageNumber;
-                    this.pagination.total= data.totalElements;
+                    const pagination = {...this.pagination};
+                    pagination.total = data.totalElements;
+                    this.pagination = pagination;
                 });
             },
             handleTableChange(pagination){
                 this.pagination = pagination;
-                const params = {
-                    pageNumber: pagination.current,
-                    pageSize: pagination.pageSize
-                };
-                this.fetch(params);
+                this.fetch();
             },
             handleCreate(){
                 this.$refs.userDetail.parentHandleShow();
