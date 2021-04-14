@@ -12,8 +12,8 @@
                 </a-form-model-item>
                 <a-form-model-item label="性别">
                     <a-radio-group v-model="form.gender">
-                        <a-radio value="1">男</a-radio>
-                        <a-radio value="2">女</a-radio>
+                        <a-radio :value="1">男</a-radio>
+                        <a-radio :value="2">女</a-radio>
                     </a-radio-group>
                 </a-form-model-item>
                 <a-form-model-item label="手机号">
@@ -49,7 +49,7 @@
             handleOk(){
                 reqwest({
                     url:'http://localhost:8080/user',
-                    method:'post',
+                    method:'put',
                     data:JSON.stringify(this.form),
                     contentType:'application/json',
                     type:'json',

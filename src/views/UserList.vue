@@ -125,9 +125,9 @@
                 }).then(data => {
                     console.log(data);
                     this.loading = false;
-                    this.data=data.content;
+                    this.data=data.data.content;
                     const pagination = {...this.pagination};
-                    pagination.total = data.totalElements;
+                    pagination.total = data.data.totalElements;
                     this.pagination = pagination;
                 });
             },
