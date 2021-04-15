@@ -9,7 +9,7 @@
                             <router-link to="/userList">用户管理</router-link>
                         </a-menu-item>
                         <a-menu-item key="2">
-                            <router-link to="/userList">角色管理</router-link>
+                            <router-link to="/roleList">角色管理</router-link>
                         </a-menu-item>
                         <a-menu-item key="3">
                             <router-link to="/userList">菜单管理</router-link>
