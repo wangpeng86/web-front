@@ -23,13 +23,21 @@
         </a-page-header>
 
         <a-table :row-key="record => record.id" :columns="columns" :data-source="data" :pagination="pagination" :loading="loading" @change="handleTableChange">
-
+            <template slot="status" slot-scope="text">
+                <span v-if="text == 1">新建</span>
+                <span v-if="text == 2">正常</span>
+                <span v-if="text == 9">禁用</span>
+            </template>
+            <template slot="action" slot-scope="text,record">
+                <a href="javascript:;" @click="handleEdit(record)">详情</a>
+            </template>
         </a-table>
+        <role-detail ref="roleDetail"></role-detail>
     </div>
 </template>
 <script>
     import reqwest from 'reqwest';
-
+    import RoleDetail from './RoleDetail.vue';
     const columns = [{
         title: '角色名称',
         dataIndex: 'name',
@@ -41,14 +49,15 @@
     },{
         title: '状态',
         dataIndex: 'status',
-        key: 'status'
+        key: 'status',
+        scopedSlots: {customRender: 'status'},
     },{
-        title: '创建时间',
-        dataIndex: 'createTime',
-        key: 'createTime'
+        title: '操作',
+        scopedSlots: {customRender: 'action'},
     }];
 
     export default{
+        components: { RoleDetail },
         data(){
             return {
                 schForm:{
@@ -87,8 +96,11 @@
                 this.fetch();
             },
             handleCreate(){
-                alert("create");
+                this.$refs.roleDetail.parentHandleShow();
             },
+            handleEdit(record){
+                console.log(record);
+            }
         },
         mounted(){
             this.fetch();
