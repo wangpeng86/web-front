@@ -153,9 +153,6 @@
                     this.fetch();
                 });
             },
-            handleMoreActionClick(e){
-                console.log(e.key);
-            },
             handleLinkRole(record){
                 console.log(record);
             },

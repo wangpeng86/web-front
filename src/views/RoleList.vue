@@ -30,6 +30,23 @@
             </template>
             <template slot="action" slot-scope="text,record">
                 <a href="javascript:;" @click="handleEdit(record)">详情</a>
+                <a-divider type="vertical" />
+                <a-popconfirm title="请点击确定删除" @confirm="() => handleDelete(record.id)"><a href="javascript:;">删除</a></a-popconfirm>
+                <a-divider type="vertical" />
+                <a-dropdown :trigger="['click']">
+                    <a class="ant-dropdown-link">更多<a-icon type="down"></a-icon></a>
+                    <a-menu slot="overlay" @click="handleMoreActionClick">
+                        <a-menu-item key="1">
+                            <a href="javascript:;" @click="handleLinkMenu(record)">关联菜单</a>
+                        </a-menu-item>
+                        <a-menu-item key="2">
+                            <a-popconfirm v-if="data.length" title="请点击确定启用" @confirm="() => handleEnable(record.id)"><a href="javascript:;">启用</a></a-popconfirm>
+                        </a-menu-item>
+                        <a-menu-item key="3">
+                            <a-popconfirm v-if="data.length" title="请点击确定禁用" @confirm="() => handleDisable(record.id)"><a href="javascript:;">禁用</a></a-popconfirm>
+                        </a-menu-item>
+                    </a-menu>
+                </a-dropdown>
             </template>
         </a-table>
         <role-detail ref="roleDetail"></role-detail>
@@ -99,8 +116,23 @@
                 this.$refs.roleDetail.parentHandleShow();
             },
             handleEdit(record){
+                this.$refs.roleDetail.parentHandleShow(record);
+            },
+            handleDelete(id){
+                console.log(id);
+            },
+            handleMoreActionClick(e){
+                console.log(e.key);
+            },
+            handleLinkMenu(record){
                 console.log(record);
-            }
+            },
+            handleEnable(id){
+                console.log(id);
+            },
+            handleDisable(id){
+                console.log(id);
+            },
         },
         mounted(){
             this.fetch();

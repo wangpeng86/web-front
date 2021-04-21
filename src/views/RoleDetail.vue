@@ -41,14 +41,20 @@
                 this.visible = true;
             },
             handleOk(){
+                var method = (this.form.id == '' ? 'post' : 'put');
                 reqwest({
                     url:'http://localhost:8080/role',
-                    method:'put',
+                    method:method,
                     data:JSON.stringify(this.form),
                     contentType:'application/json',
                     type:'json',
                 }).then(data => {
-                    console.log(data);
+                    if(data.code == "0000"){
+                        this.$message.success("success");
+                        this.visible = false;
+                    }else{
+                        this.$message.error(data.msg);
+                    }
                 });
             },
             handleCancel(){
